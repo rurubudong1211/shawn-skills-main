@@ -1,6 +1,6 @@
 ---
 name: shawn-linux-installer
-description: Guides Chinese-language Linux software installation support for Docker/doker, Docker Compose, Nginx, MySQL, and common server packages. Use when users ask how to install, deploy, verify, troubleshoot, or summarize software installation steps on Linux hosts, WSL, or Docker containers, especially when command-based environment discovery, package-manager selection, step-by-step commands, validation, error recovery, or the --type summary parameter is needed.
+description: Guides Chinese-language Linux software installation support for Docker, Docker Compose, Nginx, MySQL, and common server packages. Use when users ask how to install, deploy, verify, troubleshoot, or summarize software installation steps on Linux hosts, WSL, or Docker containers, especially when command-based environment discovery, package-manager selection, step-by-step commands, validation, error recovery, or the --type summary parameter is needed.
 ---
 
 # Linux Software Installer

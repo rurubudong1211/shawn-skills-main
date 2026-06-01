@@ -1,100 +1,59 @@
 ---
 name: shawn-java-refactor
-version: 1.0.0
-description: 按照团队规范进行Java代码两步重构，第一步提升健壮性和可读性，第二步处理魔法值
-allowed-tools: Read, Edit, Grep, Glob, Bash
+description: 按照团队规范进行 Java 代码两步重构：第一步提升健壮性和可读性，第二步提取魔法数字和魔法字符串为类内常量。Use when users ask to refactor Java code, reduce nested logic with guard clauses, replace fragile null/collection/string checks with agreed utility classes, reduce unnecessary lambda usage, or extract magic values.
 ---
 
-# Java两步重构技能
+# Java 两步重构
 
-## 概述
-这个技能按照指定的团队规范，对Java代码进行两步重构：
-1. 第一步：提升代码健壮性与可读性，使用卫语句，限制lambda使用，使用指定工具类
-2. 第二步：将魔法值提取为类内常量
+按照团队约定对 Java 代码做行为保持的重构。默认使用中文说明，代码、类名、方法名、包名和错误信息保持原文。
+
+## 工作流程
+
+1. 读取用户指定的 Java 文件或代码片段，先理解现有行为、依赖工具类和上下文约束。
+2. 第一步重构：提升健壮性和可读性，优先降低嵌套、明确空值/集合/字符串判断、减少不必要的 lambda。
+3. 第二步重构：识别魔法数字和魔法字符串，提取为类内 `private static final` 常量，并更新引用。
+4. 修改后说明关键变化、行为保持点和需要用户自行运行的测试。
 
 ## 重构规则
 
-### 第一步规则
-- ✅ 提升代码健壮性与可读性
-- ✅ 尽量使用卫语句（Guard Clauses）
-- ✅ 尽量不要使用lambda表达式
-- ✅ 尽量不要创建新方法，如需创建不超过3个子方法
-- ✅ 使用指定的工具类进行空值和集合判断
+- 优先使用卫语句减少深层 `if/else` 嵌套。
+- 保持原有业务行为，不为了形式统一改变异常、返回值、日志、监控或调用顺序。
+- 尽量减少 lambda 和 stream 链式调用；当普通循环更清晰或更符合团队规范时，改为常规循环。
+- 尽量不创建新方法；确需提取时，控制子方法数量并保持命名具体。
+- 避免引入项目中不存在的新依赖。只有在原项目已经使用相关工具类时，才主动替换为该工具类。
+- 修改共享逻辑、边界条件或异常路径后，提醒用户运行对应单元测试或回归用例。
 
-### 第二步规则
-- ✅ 识别魔法值（Magic Numbers/Strings）
-- ✅ 提取为类内常量，使用合适的命名规范
+## 约定工具类
 
-## 使用流程
+优先使用项目中已有的约定工具类：
 
-### 开始重构
-1. 用户指定需要重构的Java文件
-2. 技能读取文件内容
-3. 执行第一步重构，显示进度和勾选
-4. 执行第二步重构，显示进度和勾选
-5. 生成重构完成报告
+- `Objects.isNull` / `Objects.nonNull`
+- `CollectionUtils.isEmpty` / `CollectionUtils.isNotEmpty`
+- `MapUtils.isEmpty` / `MapUtils.isNotEmpty`
+- `StringUtils.isBlank` / `StringUtils.isNotBlank`
+- `JSON.toJSONString`
+- `Sets.newHashSet` / `Lists.newArrayList`
+- `RequestUtil.reportUmp`
+- `ConfigWareUtils.isOpen`
 
-### 第一步重构内容
-- 使用卫语句替换嵌套if-else
-- 使用指定工具类替换原始判断
-- 简化lambda表达式为常规代码
-- 优化代码结构但保持行为不变
+如果文件中没有对应 import，先判断项目是否已有该依赖；无法确认时，不要盲目新增 import。
 
-### 第二步重构内容
-- 扫描所有魔法值（硬编码的数字、字符串）
-- 提取为private static final常量
-- 更新所有引用位置
+## 魔法值处理
 
-## 工具类使用规范
+- 提取硬编码数字和字符串时，使用有业务含义的常量名。
+- 常量放在类内字段区，通常使用 `private static final`。
+- 不要提取明显无需命名的通用值，例如 `0`、`1`、`-1`，除非它们承载明确业务含义。
+- 不要把日志模板、异常信息或协议字段机械提取成常量；只有重复出现或具有稳定业务语义时再提取。
 
-### 空值判断
-```java
-// 对象非空
-if (Objects.nonNull(obj)) { ... }
+## 输出要求
 
-// 对象为空
-if (Objects.isNull(obj)) { ... }
-```
+完成重构后，给出简短报告：
 
-### 集合判断
-```java
-// 集合非空
-if (CollectionUtils.isNotEmpty(list)) { ... }
+- 修改了哪些方法或逻辑块。
+- 哪些魔法值被提取成常量。
+- 哪些行为保持不变。
+- 建议运行哪些测试或验证命令。
 
-// 集合为空
-if (CollectionUtils.isEmpty(list)) { ... }
+## Resources
 
-// Map非空
-if (MapUtils.isNotEmpty(map)) { ... }
-
-// Map为空
-if (MapUtils.isEmpty(map)) { ... }
-```
-
-### 字符串判断
-```java
-// 字符串非空
-if (StringUtils.isNotBlank(str)) { ... }
-
-// 字符串为空
-if (StringUtils.isBlank(str)) { ... }
-```
-
-### 其他工具
-```java
-// 对象转JSON
-String json = JSON.toJSONString(obj);
-
-// 单行创建集合
-Set<String> set = Sets.newHashSet();
-List<String> list = Lists.newArrayList();
-
-// 添加监控
-RequestUtil.reportUmp("metric_name");
-
-// 检查开关
-if (ConfigWareUtils.isOpen(ConfigKeys.XXX)) { ... }
-```
-
-## 触发关键词
-- "重构java代码"
+- 需要更多示例、检查清单和常见重构模式时，读取 `references/refactor-patterns.md`。

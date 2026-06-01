@@ -48,7 +48,7 @@ first_os_value() {
   fi
 }
 
-printf 'BEGIN linux-software-installer environment report\n'
+printf 'BEGIN shawn-linux-installer environment report\n'
 kv "collected_at_utc" "$(date -u '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || printf 'unknown')"
 kv "hostname" "$(hostname 2>/dev/null || printf 'unknown')"
 kv "user" "$(id 2>/dev/null || printf 'unknown')"
@@ -213,4 +213,4 @@ else
   kv "systemctl services" "skipped"
 fi
 
-printf '\nEND linux-software-installer environment report\n'
+printf '\nEND shawn-linux-installer environment report\n'

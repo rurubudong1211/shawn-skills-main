@@ -1,117 +1,159 @@
-# shawn-skills-main
+# shawn-skills
 
-这是一个 Codex Skills 仓库，用于沉淀可复用的工作流和专项能力。
+> 一套面向中文开发者的 Codex Agent Skills，覆盖 Linux 运维安装、Java 代码重构、性能分析和文档生成——让 AI 助手按团队规范干活。
 
-当前项目包含两个正式 skills：
+[![GitHub stars](https://img.shields.io/github/stars/rurubudong1211/shawn-skills-main?style=flat)](https://github.com/rurubudong1211/shawn-skills-main)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![Skills](https://img.shields.io/badge/skills-4-blue)](./skills)
 
-- `shawn-linux-installer`
-- `shawn-java-refactor`
+## ✨ 项目亮点
 
-## 目录结构
+- **开箱即用的 AI 技能包**：每个 skill 自带触发条件、工作流程和参考资源，安装即用，无需额外配置。
+- **面向中文开发场景**：默认中文交互，适配 Linux/WSL、Java 团队规范、中文文档生成等国内常见需求。
+- **结构化可维护**：每个 skill 独立目录，规则、参考文档、脚本分离，方便团队定制和版本管理。
 
-```text
-skills/
-├── shawn-linux-installer/
-│   ├── SKILL.md
-│   ├── agents/
-│   │   └── openai.yaml
-│   ├── references/
-│   └── scripts/
-└── shawn-java-refactor/
-    ├── SKILL.md
-    ├── agents/
-    │   └── openai.yaml
-    └── references/
-```
+## 🎯 适合谁用
 
-## Skills
+- 用 **Codex / Claude Code** 等 AI 编程助手，想让 AI 按团队约定执行特定任务。
+- 需要标准化的 **Linux 软件安装流程**（Docker、Nginx、MySQL），减少运维摸索时间。
+- 希望 AI 自动按规范 **重构 Java 代码**，统一卫语句、工具类和魔法值处理。
+- 想让 AI 帮忙 **分析性能瓶颈** 或 **生成中文项目文档**。
 
-### shawn-linux-installer
+## 📦 安装
 
-Linux 软件安装指导 skill，主要用于中文环境下的服务器软件安装、部署、验证和故障排查。
+### 方式一：Skill Installer（推荐）
 
-适用场景：
-
-- Docker / Docker Compose 安装与验证
-- Nginx 安装、容器化部署与端口验证
-- MySQL 安装、Docker Compose 部署与初始化检查
-- Linux / WSL 环境信息采集
-- 根据发行版、包管理器、init 系统和网络条件选择安装方案
-- 按步骤提供命令、验证方式、预期结果和失败排查方向
-
-当用户请求中包含 `--type summary` 时，该 skill 会生成中文 Markdown 安装记录，保存到：
+在 Codex 中直接通过 `$skill-installer` 安装：
 
 ```text
-.shawn-skills/shawn-linux-installer/
-```
-
-### shawn-java-refactor
-
-Java 代码两步重构 skill，用于按照团队约定提升代码可读性、健壮性，并处理魔法值。
-
-重构流程：
-
-1. 提升代码健壮性和可读性。
-2. 将魔法数字、魔法字符串提取为类内常量。
-
-主要规则：
-
-- 优先使用卫语句减少嵌套。
-- 尽量减少 lambda 表达式，必要时改为常规循环或条件逻辑。
-- 尽量不创建新方法；确需创建时控制子方法数量。
-- 使用约定工具类进行空值、集合、字符串判断。
-- 将硬编码数字和字符串提取为 `private static final` 常量。
-
-## 安装
-
-将本仓库推送到 GitHub 后，别人可以在 Codex 中使用 `$skill-installer` 安装指定 skill。
-
-安装单个 skill：
-
-```text
-使用 $skill-installer 从 https://github.com/<owner>/shawn-skills-main/tree/main/skills/shawn-linux-installer 安装
-```
-
-```text
-使用 $skill-installer 从 https://github.com/<owner>/shawn-skills-main/tree/main/skills/shawn-java-refactor 安装
-```
-
-一次安装多个 skills：
-
-```text
-使用 $skill-installer 从 GitHub 仓库 <owner>/shawn-skills-main 安装：
+使用 $skill-installer 从 GitHub 仓库 rurubudong1211/shawn-skills-main 安装：
 skills/shawn-linux-installer
 skills/shawn-java-refactor
+skills/shawn-perf-profiler
+skills/shawn-zh-readme
 ```
 
-安装完成后，需要重启 Codex 才会加载新 skills。
+安装完成后 **重启 Codex** 即可加载新技能。
 
-## 手动安装
+### 方式二：手动安装
 
-也可以 clone 本仓库后，将需要的 skill 目录复制到本机 Codex skills 目录。
+将需要的 skill 目录复制到本地 Codex skills 目录：
 
-Windows：
-
+**Windows：**
 ```text
 %USERPROFILE%\.codex\skills\
 ```
 
-macOS / Linux：
-
+**macOS / Linux：**
 ```text
 ~/.codex/skills/
 ```
 
-最终目录应类似：
+最终目录结构应类似：
 
 ```text
 ~/.codex/skills/shawn-linux-installer/SKILL.md
 ~/.codex/skills/shawn-java-refactor/SKILL.md
+~/.codex/skills/shawn-perf-profiler/SKILL.md
+~/.codex/skills/shawn-zh-readme/SKILL.md
 ```
 
-## 维护说明
+## 🧭 Skills 一览
 
-- 正式 skill 放在 `skills/<skill-name>/SKILL.md`。
-- `SKILL.md` frontmatter 只保留 `name` 和 `description`，避免放入无效字段。
-- 复杂规则、示例和参考资料放在对应 skill 的 `references/` 目录中，并从 `SKILL.md` 说明何时读取。
-- UI 展示信息放在 `agents/openai.yaml`，包括 `display_name`、`short_description` 和 `default_prompt`。
+| Skill | 用途 | 触发场景 |
+|-------|------|----------|
+| `shawn-linux-installer` | Linux 软件安装运维 | 在 Linux/WSL 上安装 Docker、Nginx、MySQL；环境采集、方案选择、错误处理、生成安装总结 |
+| `shawn-java-refactor` | Java 两步重构 | 卫语句降嵌套、替换约定工具类、减少不必要的 lambda、提取魔法值 |
+| `shawn-perf-profiler` | 性能分析 | 代码级、数据库级、网络级瓶颈识别与优化建议 |
+| `shawn-zh-readme` | 中文 README 生成 | 分析项目后生成面向中文开发者的高质量 README |
+
+### 典型用法
+
+```text
+# 安装 MySQL 并生成中文安装记录
+使用 $shawn-linux-installer 帮我在 Ubuntu 上安装 MySQL --type summary
+
+# 按团队规范重构 Java 代码
+使用 $shawn-java-refactor 重构这个 Java 文件
+
+# 分析性能瓶颈
+使用 $shawn-perf-profiler 分析这个接口的性能问题
+
+# 为项目生成中文 README
+帮这个仓库写一个中文 README
+```
+
+## 📁 项目结构
+
+```text
+shawn-skills-main/
+├── skills/                          # 正式 skill（每个独立目录）
+│   ├── shawn-linux-installer/       # Linux 安装运维
+│   │   ├── SKILL.md                 # skill 主文件（触发条件、工作流程）
+│   │   ├── agents/openai.yaml       # UI 展示信息
+│   │   ├── references/              # 参考文档（安装手册）
+│   │   └── scripts/                 # 辅助脚本（环境采集）
+│   ├── shawn-java-refactor/         # Java 两步重构
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml
+│   │   └── references/              # 重构模式参考
+│   ├── shawn-perf-profiler/         # 性能分析
+│   │   └── SKILL.md
+│   └── shawn-zh-readme/             # 中文 README 生成器
+│       └── SKILL.md
+├── .agents/skills/                  # 本地 agent 技能（仅 shaown-zh-readme）
+└── README.md
+```
+
+## 🛠️ 自定义开发
+
+### Skill 结构规范
+
+新建一个 skill 只需创建以下结构：
+
+```text
+skills/<skill-name>/
+├── SKILL.md              # 必需：触发条件（frontmatter）+ 工作流程
+├── agents/openai.yaml    # 可选：UI 展示信息
+├── references/           # 可选：复杂规则、示例、参考资料
+└── scripts/              # 可选：辅助脚本
+```
+
+### SKILL.md 模板
+
+```markdown
+---
+name: your-skill-name
+description: 一句话描述，包含触发关键词（Use when ...）
+---
+
+# Skill 标题
+
+## 触发条件
+...
+
+## 工作流程
+...
+```
+
+- 正式 skill 放在 `skills/<name>/SKILL.md`
+- frontmatter 只保留 `name` 和 `description`
+- 复杂规则放入 `references/`，在 `SKILL.md` 中说明何时读取
+- UI 展示信息写入 `agents/openai.yaml`
+
+## 🤝 贡献
+
+欢迎 PR / Issue。贡献流程：
+
+1. Fork 本仓库
+2. 在 `skills/` 下新建或修改 skill 目录
+3. 确保 `SKILL.md` 的 frontmatter 格式正确
+4. 提交 PR 并附上 skill 的使用说明
+
+## 📝 License
+
+MIT © 2026 — 详见 [LICENSE](./LICENSE)
+
+---
+
+> **仓库地址**：[github.com/rurubudong1211/shawn-skills-main](https://github.com/rurubudong1211/shawn-skills-main)

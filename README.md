@@ -154,6 +154,4 @@ description: 一句话描述，包含触发关键词（Use when ...）
 
 MIT © 2026 — 详见 [LICENSE](./LICENSE)
 
----
 
-> **仓库地址**：[github.com/rurubudong1211/shawn-skills-main](https://github.com/rurubudong1211/shawn-skills-main)

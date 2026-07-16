@@ -1,0 +1,7 @@
+interface:
+  display_name: "Shawn 写作风格"
+  short_description: "用于复刻技术资讯短文的清晰判断感、解释节奏和克制语气"
+  default_prompt: "Use $shawn-writing-style to draft a concise Chinese tech analysis article."
+
+policy:
+  allow_implicit_invocation: true

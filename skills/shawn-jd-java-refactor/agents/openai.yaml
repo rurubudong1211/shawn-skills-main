@@ -1,0 +1,4 @@
+interface:
+  display_name: "Java 两步重构"
+  short_description: "按团队规范重构 Java 代码，优化可读性、健壮性并提取魔法值。"
+  default_prompt: "Use $shawn-java-refactor to refactor this Java file according to the team's two-step refactoring rules."

@@ -1,4 +1,0 @@
-﻿interface:
-  display_name: "Linux 软件安装运维"
-  short_description: "指导 Linux/WSL 软件安装、命令式环境采集、方案选择、错误处理和中文 summary 文档输出。"
-  default_prompt: "Use $shawn-linux-installer to help me install Docker, Nginx, or MySQL on Linux, or add --type summary to save the installation steps as a Chinese Markdown document."
